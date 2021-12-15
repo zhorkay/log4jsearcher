@@ -69,8 +69,10 @@ public class Main {
 
     private static void save(String workDir) {
         try {
+            Files.createDirectories(Paths.get(workDir));
             String fileName = workDir + "/" + "result_" + System.currentTimeMillis() + ".csv";
             Path file = Paths.get(fileName);
+
             Files.write(file, lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
