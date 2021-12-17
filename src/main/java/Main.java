@@ -23,13 +23,12 @@ public class Main {
                         .forEach(path -> {
                             if (!Files.isSymbolicLink(path)) {
                                 String fileName = path.getFileName().toString().toLowerCase();
-                                if (fileName.contains("log4j")) {
+                                if (fileName.startsWith("log4j") && fileName.endsWith(".jar")) {
                                     String fileType = Files.isDirectory(path) ? "directory" : "regularFile";
                                     String line = path + ";" + fileType + ";";
                                     lines.add(line);
                                 }
-
-                                if (Files.isRegularFile(path) && (fileName.endsWith(".jar") || fileName.endsWith(".war"))) {
+                                else if (Files.isRegularFile(path) && (fileName.endsWith(".jar") || fileName.endsWith(".war"))) {
                                     handlerJar(path);
                                 }
                             }
@@ -74,6 +73,7 @@ public class Main {
             Path file = Paths.get(fileName);
 
             Files.write(file, lines, StandardCharsets.UTF_8);
+            System.out.println("Successfully saved: " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
